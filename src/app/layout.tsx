@@ -1,21 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Montserrat } from 'next/font/google'
 import './globals.css'
-
-const cormorant = Cormorant_Garamond({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-cormorant',
-  display: 'swap',
-})
-
-const montserrat = Montserrat({ 
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  variable: '--font-montserrat',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: 'Happy Diwali | Kiera Construction and Developers Pvt. Ltd.',
@@ -31,8 +15,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${montserrat.variable} scroll-smooth`}>
-      <body className="font-sans bg-[#08080a] text-white min-h-screen overflow-x-hidden selection:bg-[#d4af37] selection:text-black">
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" 
+          rel="stylesheet" 
+        />
+      </head>
+      <body className="font-sans bg-[#08080a] text-white min-h-screen overflow-x-hidden selection:bg-[#dfcca6] selection:text-black">
         {children}
       </body>
     </html>
