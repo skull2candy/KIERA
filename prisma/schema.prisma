@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String     @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole   @default(ADMIN)
+  password      String?
+  accounts      Account[]
+  activities    Activity[]
+  sessions      Session[]
+  blogPosts     BlogPost[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+model Project {
+  id                  String         @id @default(cuid())
+  title               String
+  slug                String         @unique
+  status              ProjectStatus  @default(DRAFT)
+  brochureUrl         String?
+  featured            Boolean        @default(false)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  coverUrl            String?
+  description         String
+  location            String
+  amenities           String[]
+  images              String[]
+  possessionDate      DateTime?
+  priceRange          String?
+  accessControl       Boolean        @default(false)
+  bhk1                Boolean        @default(false)
+  bhk2                Boolean        @default(false)
+  bhk3                Boolean        @default(false)
+  bhk4                Boolean        @default(false)
+  bhk5                Boolean        @default(false)
+  bhk6                Boolean        @default(false)
+  bhkAvailable        String?
+  cctv                Boolean        @default(false)
+  city                String?
+  clubhouse           Boolean        @default(false)
+  constructionQuality String?
+  constructionUpdates Json?
+  duplex              Boolean        @default(false)
+  emergencyExit       Boolean        @default(false)
+  fireSafety          Boolean        @default(false)
+  floorPlans          Json?
+  floorRange          String?
+  floors              String?
+  fullyFurnished      Boolean        @default(false)
+  garden              Boolean        @default(false)
+  gstRate             String?
+  gym                 Boolean        @default(false)
+  intercom            Boolean        @default(false)
+  internet            Boolean        @default(false)
+  joggingTrack        Boolean        @default(false)
+  landscaping         Boolean        @default(false)
+  lat                 Float?
+  library             Boolean        @default(false)
+  lng                 Float?
+  locationFeatures    Json?
+  maintenanceCost     String?
+  meditationArea      Boolean        @default(false)
+  metaDescription     String?
+  metaKeywords        String?
+  metaTitle           String?
+  parking             Boolean        @default(false)
+  parkingNumber       String?
+  partyHall           Boolean        @default(false)
+  penthouse           Boolean        @default(false)
+  playground          Boolean        @default(false)
+  powerBackup         Boolean        @default(false)
+  priceBand           String?
+  projectStatus       String?
+  propertyType        String?
+  registrationCost    String?
+  security            Boolean        @default(false)
+  securityGuards      Boolean        @default(false)
+  semiFurnished       Boolean        @default(false)
+  shortDescription    String?
+  startingPrice       Float?
+  structure           String?
+  studio              Boolean        @default(false)
+  swimmingPool        Boolean        @default(false)
+  totalUnits          String?
+  unitFeatures        String[]
+  villa               Boolean        @default(false)
+  warranty            String?
+  waterSupply         Boolean        @default(false)
+  coverVideoUrl       String?
+  activities          Activity[]
+  enquiries           Enquiry[]
+  uploadedFiles       UploadedFile[]
+
+  @@map("projects")
+}
+
+model Enquiry {
+  id        String        @id @default(cuid())
+  projectId String?
+  name      String
+  email     String
+  phone     String?
+  message   String
+  status    EnquiryStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  source    String?
+  updatedAt DateTime      @updatedAt
+  project   Project?      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("enquiries")
+}
+
+model Activity {
+  id          String       @id @default(cuid())
+  type        ActivityType
+  description String
+  projectId   String?
+  blogPostId  String?
+  userId      String?
+  metadata    Json?
+  createdAt   DateTime     @default(now())
+  project     Project?     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  blogPost    BlogPost?    @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  user        User?        @relation(fields: [userId], references: [id])
+
+  @@map("activities")
+}
+
+model UploadedFile {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  data         String
+  url          String
+  projectId    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  project      Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("uploaded_files")
+}
+
+enum UserRole {
+  ADMIN
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  WON
+  LOST
+}
+
+enum ActivityType {
+  PROJECT_CREATED
+  PROJECT_UPDATED
+  PROJECT_DELETED
+  PROJECT_PUBLISHED
+  PROJECT_UNPUBLISHED
+  ENQUIRY_CREATED
+  ENQUIRY_STATUS_CHANGED
+  BLOG_CREATED
+  BLOG_UPDATED
+  BLOG_DELETED
+  BLOG_PUBLISHED
+  BLOG_UNPUBLISHED
+}
+
+model BlogPost {
+  id            String       @id @default(cuid())
+  title         String
+  slug          String       @unique
+  excerpt       String?
+  content       String
+  featuredImage String?
+  status        BlogStatus   @default(DRAFT)
+  publishedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  authorId      String
+  author        User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  tags          String[]
+  categories    String[]
+  metaTitle     String?
+  metaDescription String?
+  metaKeywords  String?
+  readingTime   Int?         // in minutes
+  viewCount     Int          @default(0)
+  seoScore      Int?         // 0-100 SEO score
+  activities    Activity[]
+
+  @@map("blog_posts")
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}

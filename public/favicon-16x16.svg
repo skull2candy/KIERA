@@ -1,0 +1,19 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="16" height="16" rx="3.2" fill="#1a1a1a"/>
+    <g transform="translate(2, 2)">
+      <rect x="2" y="4" width="8" height="8" fill="#ffffff" opacity="0.95"/>
+      <rect x="2.6666666666666665" y="5.333333333333333" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="5.333333333333333" y="5.333333333333333" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="8" y="5.333333333333333" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="2.6666666666666665" y="8" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="5.333333333333333" y="8" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="8" y="8" width="1.3333333333333333" height="1.3333333333333333" fill="#1a1a1a" opacity="0.3"/>
+      <rect x="4" y="10.666666666666666" width="4" height="1.3333333333333333" fill="#1a1a1a" opacity="0.5"/>
+      <rect x="2" y="4" width="8" height="0.6666666666666666" fill="#d4af37"/>
+      <path d="M4 4 L10.666666666666666 4 L12.307692307692307 3.2 L6.4 3.2 Z" fill="#d4af37"/>
+    </g>
+    <circle cx="4" cy="4" r="1" fill="#d4af37" opacity="0.7"/>
+    <circle cx="12" cy="4" r="1" fill="#d4af37" opacity="0.7"/>
+    <circle cx="4" cy="12" r="1" fill="#d4af37" opacity="0.7"/>
+    <circle cx="12" cy="12" r="1" fill="#d4af37" opacity="0.7"/>
+  </svg>
